@@ -12,7 +12,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="h-full min-h-screen w-20 bg-gradient-to-b from-red-600 via-red-500 to-red-400 shadow-lg flex flex-col items-center py-6 gap-4 sticky top-0 z-40">
+    <aside className="h-full min-h-screen w-20 bg-gradient-to-b from-red-600 via-red-500 to-red-400 shadow-lg flex flex-col items-center py-6 gap-4 fixed top-10 left-0 z-40">
       {navItems.map((item) => {
         const isActive = location.pathname === item.to;
         return (

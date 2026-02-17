@@ -1,8 +1,8 @@
-import { Oval } from 'react-loader-spinner'
+import { FidgetSpinner } from 'react-loader-spinner'
 
 function Loader() {
   return (
-    <Oval
+    <FidgetSpinner
       height={80}
       width={80}
       color="#4fa94d"
