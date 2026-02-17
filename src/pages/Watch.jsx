@@ -1,53 +1,56 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import Loader from '../components/Loader';
 
 const Watch = () => {
-  const [videos, setVideos] = useState([]);
+  const { id } = useParams();
+  const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(true);
   const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 
   useEffect(() => {
-    async function fetchTrending() {
+    async function fetchVideo() {
       setLoading(true);
       try {
         const res = await fetch(
-          `https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&regionCode=US&maxResults=16&key=${API_KEY}`
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${id}&key=${API_KEY}`
         );
         const data = await res.json();
-        setVideos(data.items || []);
+        setVideo(data.items && data.items[0] ? data.items[0] : null);
       } catch (err) {
-        setVideos([]);
+        setVideo(null);
       }
       setLoading(false);
     }
-    fetchTrending();
-  }, []);
+    if (id) fetchVideo();
+  }, [id]);
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-6 text-white">Trending Videos</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {loading ? (
-          <div className="col-span-full flex justify-center items-center h-40">
-            <Loader />
+    <div className="min-h-screen w-full bg-black flex flex-col items-center justify-start py-8 px-0">
+      {loading ? (
+        <Loader />
+      ) : video ? (
+        <div className="w-full max-w-6xl flex flex-col items-center">
+          <div className="aspect-video w-full bg-black mb-6">
+            <iframe
+              width="100%"
+              height="700"
+              src={`https://www.youtube.com/embed/${id}`}
+              title={video.snippet.title}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full"
+              style={{ minHeight: '400px', background: '#000' }}
+            />
           </div>
-        ) : (
-          videos.map((video) => (
-            <div key={video.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-200">
-              <img
-                src={video.snippet.thumbnails?.medium?.url}
-                alt={video.snippet.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-3">
-                <h3 className="text-md font-semibold mb-1 truncate" title={video.snippet.title}>{video.snippet.title}</h3>
-                <p className="text-xs text-gray-500 mb-2">{video.snippet.channelTitle}</p>
-                <p className="text-xs text-gray-400 truncate">{video.snippet.description}</p>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
+          <h2 className="text-3xl md:text-4xl font-extrabold mb-2 text-red-600 text-left w-full px-4">{video.snippet.title}</h2>
+          <p className="text-lg text-gray-300 mb-2 text-left w-full px-4 font-semibold">{video.snippet.channelTitle}</p>
+          <p className="text-base text-gray-400 mb-4 text-left w-full px-4 whitespace-pre-line">{video.snippet.description}</p>
+        </div>
+      ) : (
+        <div className="text-center text-gray-500">Video not found.</div>
+      )}
     </div>
   );
 };
