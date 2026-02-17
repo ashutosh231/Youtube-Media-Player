@@ -27,9 +27,7 @@ const Home = () => {
   return (
     <div className="p-2 pl-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {loading ? (
-        <div className="col-span-full flex justify-center items-center h-40">
-          <Loader />
-        </div>
+        Array.from({ length: 8 }).map((_, idx) => <ShimmerCard key={idx} />)
       ) : (
         videos.map((video) => (
           <div key={video.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-200">
