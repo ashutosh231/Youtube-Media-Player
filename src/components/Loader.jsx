@@ -2,19 +2,20 @@ import { FidgetSpinner } from 'react-loader-spinner'
 
 function Loader() {
   return (
-    <FidgetSpinner
-      height={80}
-      width={80}
-      color="#4fa94d"
-      wrapperStyle={{}}
-      wrapperClass=""
-      visible={true}
-      ariaLabel='oval-loading'
-      secondaryColor="#4fa94d"
-      strokeWidth={2}
-      strokeWidthSecondary={2}
-    />
-    
+    <div className="flex items-center justify-center">
+      <FidgetSpinner
+        height={80}
+        width={80}
+        color="#ff2d55"
+        wrapperStyle={{}}
+        wrapperClass=""
+        visible={true}
+        ariaLabel="loading-spinner"
+        secondaryColor="#ff7a18"
+        strokeWidth={3}
+        strokeWidthSecondary={3}
+      />
+    </div>
   )
 }
 export default Loader;
